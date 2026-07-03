@@ -1,51 +1,48 @@
-import { ChevronDown } from "lucide-react"
+import Icon from "@/components/ui/icon"
 import { Button } from "@/components/ui/button"
 
 export function Header() {
   return (
     <header className="flex items-center justify-between px-8 py-4">
       <div className="flex items-center gap-2">
-        <ФинПотокLogo />
+        <WaveLogo />
         <span className="text-lg font-semibold text-white">
-          ФинПоток<sup className="text-xs">™</sup>
+          Wave FM<sup className="text-xs">™</sup>
         </span>
       </div>
 
       <nav className="hidden md:flex items-center gap-8">
-        <a href="#" className="text-sm text-gray-300 hover:text-white transition-colors">
-          Продукты
+        <a href="#chart" className="text-sm text-gray-300 hover:text-white transition-colors">
+          Чарт
         </a>
-        <a href="#" className="text-sm text-gray-300 hover:text-white transition-colors flex items-center gap-1">
-          Решения <ChevronDown className="h-4 w-4" />
+        <a href="#partners" className="text-sm text-gray-300 hover:text-white transition-colors">
+          Партнёры
         </a>
-        <a href="#" className="text-sm text-gray-300 hover:text-white transition-colors">
-          Ресурсы
+        <a href="#about" className="text-sm text-gray-300 hover:text-white transition-colors">
+          Об эфире
         </a>
-        <a href="#" className="text-sm text-gray-300 hover:text-white transition-colors">
-          Тарифы
-        </a>
-        <a href="#" className="text-sm text-gray-300 hover:text-white transition-colors">
+        <a href="#contacts" className="text-sm text-gray-300 hover:text-white transition-colors">
           Контакты
         </a>
       </nav>
 
       <Button
-        variant="outline"
-        className="rounded-full border-violet-500 text-violet-400 hover:bg-violet-500/10 hover:text-violet-300 bg-transparent"
+        className="rounded-full bg-violet-600 text-white hover:bg-violet-700"
       >
-        Запросить демо
+        <Icon name="Radio" size={16} className="mr-2" /> Слушать эфир
       </Button>
     </header>
   )
 }
 
-function ФинПотокLogo() {
+function WaveLogo() {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="8" cy="8" r="3" fill="#8B5CF6" />
-      <circle cx="16" cy="8" r="3" fill="#8B5CF6" opacity="0.6" />
-      <circle cx="8" cy="16" r="3" fill="#8B5CF6" opacity="0.6" />
-      <circle cx="16" cy="16" r="3" fill="#8B5CF6" opacity="0.4" />
+      <rect x="2" y="9" width="2.5" height="6" rx="1.25" fill="#8B5CF6" opacity="0.5" />
+      <rect x="6.5" y="5" width="2.5" height="14" rx="1.25" fill="#8B5CF6" opacity="0.75" />
+      <rect x="11" y="2" width="2.5" height="20" rx="1.25" fill="#8B5CF6" />
+      <rect x="15.5" y="5" width="2.5" height="14" rx="1.25" fill="#8B5CF6" opacity="0.75" />
+      <rect x="20" y="9" width="2.5" height="6" rx="1.25" fill="#8B5CF6" opacity="0.5" />
     </svg>
   )
 }
