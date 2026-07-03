@@ -39,6 +39,46 @@ export function ChartSection() {
   const [playlist, setPlaylist] = useState<PlaylistItem[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
+  const [playingPos, setPlayingPos] = useState<number | null>(null)
+  const [previewLoadingPos, setPreviewLoadingPos] = useState<number | null>(null)
+  const audioRef = useState(() => new Audio())[0]
+
+  useEffect(() => {
+    const onEnd = () => setPlayingPos(null)
+    audioRef.addEventListener("ended", onEnd)
+    return () => audioRef.removeEventListener("ended", onEnd)
+  }, [audioRef])
+
+  const playTrack = async (pos: number, title: string, artist: string) => {
+    if (playingPos === pos) {
+      audioRef.pause()
+      setPlayingPos(null)
+      return
+    }
+
+    audioRef.pause()
+    setPlayingPos(null)
+    setPreviewLoadingPos(pos)
+
+    try {
+      const query = encodeURIComponent(`${artist} ${title}`)
+      const res = await fetch(
+        `https://itunes.apple.com/search?term=${query}&media=music&limit=1`
+      )
+      const data = await res.json()
+      const previewUrl = data.results?.[0]?.previewUrl
+
+      if (previewUrl) {
+        audioRef.src = previewUrl
+        await audioRef.play()
+        setPlayingPos(pos)
+      }
+    } catch {
+      setPlayingPos(null)
+    } finally {
+      setPreviewLoadingPos(null)
+    }
+  }
 
   const loadPlaylist = () => {
     setLoading(true)
@@ -87,8 +127,17 @@ export function ChartSection() {
                     className="group flex items-center gap-4 px-5 py-3 transition-colors hover:bg-violet-500/10"
                   >
                     <span className="w-8 text-center text-lg font-bold text-violet-400">{track.pos}</span>
-                    <button className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-violet-600/20 text-violet-300 transition-colors group-hover:bg-violet-600 group-hover:text-white">
-                      <Icon name="Play" size={14} className="fill-current ml-0.5" />
+                    <button
+                      onClick={() => playTrack(track.pos, track.title, track.artist)}
+                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-violet-600/20 text-violet-300 transition-colors hover:bg-violet-600 hover:text-white"
+                    >
+                      {previewLoadingPos === track.pos ? (
+                        <Icon name="Loader2" size={14} className="animate-spin" />
+                      ) : playingPos === track.pos ? (
+                        <Icon name="Pause" size={14} className="fill-current" />
+                      ) : (
+                        <Icon name="Play" size={14} className="fill-current ml-0.5" />
+                      )}
                     </button>
                     <div className="min-w-0 flex-1">
                       <p className="truncate font-medium text-white">{track.title}</p>
