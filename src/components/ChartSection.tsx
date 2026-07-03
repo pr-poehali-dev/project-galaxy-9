@@ -10,7 +10,7 @@ const tracks = [
   { pos: 3, title: "GAZ", artist: "ZIVERT", trend: "same" },
   { pos: 4, title: "Давай не ждать", artist: "Мари Краймбрерри", trend: "up" },
   { pos: 5, title: "Хэппи Энд", artist: "Сергей Лазарев, Полина Гагарина", trend: "down" },
-  { pos: 6, title: "Проще", artist: "Ёлка", trend: "up" },
+  { pos: 6, title: "Проще", artist: "Мари Краймбрери", trend: "up" },
   { pos: 7, title: "Ртуть", artist: "Ваня Дмитриенко", trend: "same" },
   { pos: 8, title: "Феникс", artist: "BEARWOLF", trend: "down" },
   { pos: 9, title: "Кассеты", artist: "LYRIQ", trend: "up" },
