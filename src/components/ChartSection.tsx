@@ -41,6 +41,7 @@ export function ChartSection() {
   const [error, setError] = useState(false)
   const [playingPos, setPlayingPos] = useState<number | null>(null)
   const [previewLoadingPos, setPreviewLoadingPos] = useState<number | null>(null)
+  const [notFoundPos, setNotFoundPos] = useState<number | null>(null)
   const audioRef = useState(() => new Audio())[0]
 
   useEffect(() => {
@@ -58,10 +59,12 @@ export function ChartSection() {
 
     audioRef.pause()
     setPlayingPos(null)
+    setNotFoundPos(null)
     setPreviewLoadingPos(pos)
 
     try {
-      const query = encodeURIComponent(`${artist} ${title}`)
+      const mainArtist = artist.split(",")[0].trim()
+      const query = encodeURIComponent(`${mainArtist} ${title}`)
       const res = await fetch(
         `https://itunes.apple.com/search?term=${query}&media=music&limit=1`
       )
@@ -72,9 +75,14 @@ export function ChartSection() {
         audioRef.src = previewUrl
         await audioRef.play()
         setPlayingPos(pos)
+      } else {
+        setNotFoundPos(pos)
+        setTimeout(() => setNotFoundPos(null), 2500)
       }
     } catch {
       setPlayingPos(null)
+      setNotFoundPos(pos)
+      setTimeout(() => setNotFoundPos(null), 2500)
     } finally {
       setPreviewLoadingPos(null)
     }
@@ -141,7 +149,9 @@ export function ChartSection() {
                     </button>
                     <div className="min-w-0 flex-1">
                       <p className="truncate font-medium text-white">{track.title}</p>
-                      <p className="truncate text-sm text-gray-400">{track.artist}</p>
+                      <p className="truncate text-sm text-gray-400">
+                        {notFoundPos === track.pos ? "Превью недоступно" : track.artist}
+                      </p>
                     </div>
                     <Icon name={trend.icon} size={18} className={trend.color} />
                   </div>
