@@ -1,13 +1,37 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import Icon from "@/components/ui/icon"
 import { Button } from "@/components/ui/button"
 
 const STREAM_URL = "https://myradio24.org/19486.m3u"
+const PLAYLIST_API = "https://functions.poehali.dev/6cc1d340-a31e-4b50-ae1e-5b33f37cae78"
+
+interface CurrentTrack {
+  artist: string
+  title: string
+}
 
 export function HeroSection() {
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const [isPlaying, setIsPlaying] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [currentTrack, setCurrentTrack] = useState<CurrentTrack | null>(null)
+
+  useEffect(() => {
+    const loadCurrentTrack = () => {
+      fetch(PLAYLIST_API)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.current?.title) {
+            setCurrentTrack(data.current)
+          }
+        })
+        .catch(() => {})
+    }
+
+    loadCurrentTrack()
+    const interval = setInterval(loadCurrentTrack, 20000)
+    return () => clearInterval(interval)
+  }, [])
 
   const toggleStream = () => {
     if (!audioRef.current) {
@@ -32,7 +56,11 @@ export function HeroSection() {
         <span className="rounded-full bg-violet-500/20 px-2 py-0.5 text-xs font-medium text-violet-400">
           {isPlaying ? "В ЭФИРЕ" : "СЛУШАЙТЕ"}
         </span>
-        <span className="text-gray-300">104.5 FM • музыка без перерыва</span>
+        <span className="text-gray-300">
+          {currentTrack?.title
+            ? `${currentTrack.artist ? currentTrack.artist + " — " : ""}${currentTrack.title}`
+            : "104.5 FM • музыка без перерыва"}
+        </span>
         <Icon name="Radio" size={16} className="text-gray-400" />
       </div>
 
