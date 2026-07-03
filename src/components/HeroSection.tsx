@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import Icon from "@/components/ui/icon"
 import { Button } from "@/components/ui/button"
 
-const STREAM_URL = "https://myradio24.org/19486.m3u"
+const STREAM_URL = "https://myradio24.org/19486"
 const PLAYLIST_API = "https://functions.poehali.dev/6cc1d340-a31e-4b50-ae1e-5b33f37cae78"
 
 interface CurrentTrack {
@@ -35,17 +35,28 @@ export function HeroSection() {
 
   const toggleStream = () => {
     if (!audioRef.current) {
-      audioRef.current = new Audio(STREAM_URL)
-      audioRef.current.addEventListener("waiting", () => setIsLoading(true))
-      audioRef.current.addEventListener("playing", () => setIsLoading(false))
+      const audio = new Audio(STREAM_URL)
+      audio.preload = "none"
+      audio.volume = 1
+      audio.muted = false
+      audio.addEventListener("waiting", () => setIsLoading(true))
+      audio.addEventListener("playing", () => setIsLoading(false))
+      audioRef.current = audio
     }
 
+    const audio = audioRef.current
+    audio.muted = false
+    audio.volume = 1
+
     if (isPlaying) {
-      audioRef.current.pause()
+      audio.pause()
       setIsPlaying(false)
     } else {
       setIsLoading(true)
-      audioRef.current.play().catch(() => setIsLoading(false))
+      audio
+        .play()
+        .then(() => setIsLoading(false))
+        .catch(() => setIsLoading(false))
       setIsPlaying(true)
     }
   }
