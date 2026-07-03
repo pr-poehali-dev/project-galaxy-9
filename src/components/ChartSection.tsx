@@ -1,21 +1,21 @@
 import Icon from "@/components/ui/icon"
 
 const tracks = [
-  { pos: 1, title: "Midnight Waves", artist: "Aurora Skye", trend: "up" },
-  { pos: 2, title: "Neon Heartbeat", artist: "The Lumen", trend: "up" },
-  { pos: 3, title: "Electric Dreams", artist: "Kova", trend: "same" },
-  { pos: 4, title: "Gravity", artist: "Nova Reign", trend: "up" },
-  { pos: 5, title: "Silver Lines", artist: "Marlow", trend: "down" },
-  { pos: 6, title: "Afterglow", artist: "Selene", trend: "up" },
-  { pos: 7, title: "Lost in Sound", artist: "Echo Park", trend: "same" },
-  { pos: 8, title: "Golden Hour", artist: "Riva & Co", trend: "down" },
-  { pos: 9, title: "Paper Planes", artist: "Halcyon", trend: "up" },
-  { pos: 10, title: "Deep End", artist: "Tidal", trend: "same" },
-  { pos: 11, title: "Chasing Light", artist: "Mira Vale", trend: "up" },
-  { pos: 12, title: "Runaway", artist: "The Foxes", trend: "down" },
-  { pos: 13, title: "Velvet Sky", artist: "Solene", trend: "up" },
-  { pos: 14, title: "Wildfire", artist: "Atlas Moon", trend: "same" },
-  { pos: 15, title: "Horizon", artist: "Cassia", trend: "down" },
+  { pos: 1, title: "Шадэ", artist: "By Индия, Xcho, MOT", trend: "up" },
+  { pos: 2, title: "KARMA", artist: "ЕГОР КРИД, Artik & Asti", trend: "up" },
+  { pos: 3, title: "GAZ", artist: "ZIVERT", trend: "same" },
+  { pos: 4, title: "Давай не ждать", artist: "Мари Краймбрерри", trend: "up" },
+  { pos: 5, title: "Хэппи Энд", artist: "Сергей Лазарев, Полина Гагарина", trend: "down" },
+  { pos: 6, title: "Проще", artist: "Ёлка", trend: "up" },
+  { pos: 7, title: "Ртуть", artist: "Ваня Дмитриенко", trend: "same" },
+  { pos: 8, title: "Феникс", artist: "BEARWOLF", trend: "down" },
+  { pos: 9, title: "Кассеты", artist: "LYRIQ", trend: "up" },
+  { pos: 10, title: "Намёк на нас", artist: "MOT", trend: "same" },
+  { pos: 11, title: "Малахит", artist: "Винтаж", trend: "up" },
+  { pos: 12, title: "Leto", artist: "Jony, Feduk", trend: "down" },
+  { pos: 13, title: "Эпилог", artist: "ANNA ASTI, Дима Билан", trend: "up" },
+  { pos: 14, title: "Довольна", artist: "Nemiga", trend: "same" },
+  { pos: 15, title: "Тону", artist: "HOLLYFLAME", trend: "down" },
 ]
 
 const trendConfig: Record<string, { icon: string; color: string }> = {
