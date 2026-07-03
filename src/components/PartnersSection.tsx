@@ -1,13 +1,7 @@
 import Icon from "@/components/ui/icon"
 
 const partners = [
-  { name: "Melomania", icon: "Sparkles", url: "#" },
-  { name: "SoundLab", icon: "AudioLines", url: "#" },
-  { name: "BeatHouse", icon: "Disc3", url: "#" },
-  { name: "LiveStage", icon: "Mic2", url: "#" },
-  { name: "VinylClub", icon: "Disc", url: "#" },
-  { name: "TuneUp", icon: "Music4", url: "#" },
-  { name: "Echo Media", icon: "Radio", url: "#" },
+  { name: "RadioHub", icon: "Radio", url: "https://onlineradiohub.ru/" },
 ]
 
 export function PartnersSection() {
