@@ -1,65 +1,9 @@
-import { useEffect, useRef, useState } from "react"
 import Icon from "@/components/ui/icon"
 import { Button } from "@/components/ui/button"
-
-const STREAM_URL = "https://myradio24.org/19486"
-const PLAYLIST_API = "https://functions.poehali.dev/6cc1d340-a31e-4b50-ae1e-5b33f37cae78"
-
-interface CurrentTrack {
-  artist: string
-  title: string
-}
+import { useRadioPlayer } from "@/contexts/RadioPlayerContext"
 
 export function HeroSection() {
-  const audioRef = useRef<HTMLAudioElement | null>(null)
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const [currentTrack, setCurrentTrack] = useState<CurrentTrack | null>(null)
-
-  useEffect(() => {
-    const loadCurrentTrack = () => {
-      fetch(PLAYLIST_API)
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.current?.title) {
-            setCurrentTrack(data.current)
-          }
-        })
-        .catch(() => {})
-    }
-
-    loadCurrentTrack()
-    const interval = setInterval(loadCurrentTrack, 20000)
-    return () => clearInterval(interval)
-  }, [])
-
-  const toggleStream = () => {
-    if (!audioRef.current) {
-      const audio = new Audio(STREAM_URL)
-      audio.preload = "none"
-      audio.volume = 1
-      audio.muted = false
-      audio.addEventListener("waiting", () => setIsLoading(true))
-      audio.addEventListener("playing", () => setIsLoading(false))
-      audioRef.current = audio
-    }
-
-    const audio = audioRef.current
-    audio.muted = false
-    audio.volume = 1
-
-    if (isPlaying) {
-      audio.pause()
-      setIsPlaying(false)
-    } else {
-      setIsLoading(true)
-      audio
-        .play()
-        .then(() => setIsLoading(false))
-        .catch(() => setIsLoading(false))
-      setIsPlaying(true)
-    }
-  }
+  const { isPlaying, isLoading, currentTrack, toggleStream } = useRadioPlayer()
 
   return (
     <section id="about" className="flex flex-col items-center justify-center px-4 pt-12 pb-8 text-center">

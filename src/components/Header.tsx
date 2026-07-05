@@ -1,7 +1,10 @@
 import Icon from "@/components/ui/icon"
 import { Button } from "@/components/ui/button"
+import { useRadioPlayer } from "@/contexts/RadioPlayerContext"
 
 export function Header() {
+  const { isPlaying, isLoading, toggleStream } = useRadioPlayer()
+
   return (
     <header className="flex items-center justify-between px-8 py-4">
       <div className="flex items-center gap-2">
@@ -27,9 +30,15 @@ export function Header() {
       </nav>
 
       <Button
+        onClick={toggleStream}
         className="rounded-full bg-violet-600 text-white hover:bg-violet-700"
       >
-        <Icon name="Radio" size={16} className="mr-2" /> Слушать эфир
+        {isLoading ? (
+          <Icon name="Loader2" size={16} className="mr-2 animate-spin" />
+        ) : (
+          <Icon name={isPlaying ? "Pause" : "Radio"} size={16} className="mr-2" />
+        )}
+        {isPlaying ? "Пауза" : "Слушать эфир"}
       </Button>
     </header>
   )
