@@ -1,11 +1,16 @@
 import json
+import os
 import urllib.request
+from datetime import date
+
+import psycopg2
 
 STATUS_URL = "https://myradio24.org/users/19486/status.json"
 
 
 def handler(event: dict, context) -> dict:
-    """Получает историю треков радиостанции Wave FM с MyRadio24 и отдаёт на фронтенд."""
+    """Получает текущий трек радиостанции Wave FM с MyRadio24, сохраняет историю
+    сыгранных треков в БД и отдаёт на фронтенд плейлист за весь текущий день."""
     if event.get('httpMethod') == 'OPTIONS':
         return {
             'statusCode': 200,
@@ -35,7 +40,7 @@ def handler(event: dict, context) -> dict:
         }
 
     raw_songs = data.get('songs', [])
-    playlist = []
+    fresh_tracks = []
     seen = set()
     for item in raw_songs:
         song = item.get('song', '')
@@ -54,12 +59,52 @@ def handler(event: dict, context) -> dict:
         img = item.get('img', '')
         cover = f"https://myradio24.org/{img}" if img and img != 'img/nocover.jpg' else ''
 
-        playlist.append({
+        fresh_tracks.append({
             'time': item.get('time', ''),
             'artist': artist.strip(),
             'title': title.strip(),
-            'cover': cover
+            'cover': cover,
+            'song_id': item.get('songid', '')
         })
+
+    schema = os.environ.get('MAIN_DB_SCHEMA', 'public')
+    today = date.today()
+    playlist = []
+
+    try:
+        dsn = os.environ['DATABASE_URL']
+        conn = psycopg2.connect(dsn)
+        conn.autocommit = True
+        cur = conn.cursor()
+
+        for t in fresh_tracks:
+            cur.execute(
+                f"""
+                INSERT INTO "{schema}".radio_play_history (play_date, play_time, artist, title, cover, song_id)
+                VALUES (%s, %s, %s, %s, %s, %s)
+                ON CONFLICT (play_date, play_time, song_id) DO NOTHING
+                """,
+                (today, t['time'], t['artist'], t['title'], t['cover'], t['song_id'])
+            )
+
+        cur.execute(
+            f"""
+            SELECT play_time, artist, title, cover
+            FROM "{schema}".radio_play_history
+            WHERE play_date = %s
+            ORDER BY play_time ASC
+            """,
+            (today,)
+        )
+        rows = cur.fetchall()
+        playlist = [
+            {'time': r[0], 'artist': r[1], 'title': r[2], 'cover': r[3]}
+            for r in rows
+        ]
+        cur.close()
+        conn.close()
+    except Exception:
+        playlist = fresh_tracks
 
     result = {
         'current': {
