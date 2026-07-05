@@ -12,6 +12,8 @@ interface RadioPlayerState {
   isPlaying: boolean
   isLoading: boolean
   currentTrack: CurrentTrack | null
+  volume: number
+  setVolume: (value: number) => void
   toggleStream: () => void
 }
 
@@ -22,6 +24,7 @@ export function RadioPlayerProvider({ children }: { children: ReactNode }) {
   const [isPlaying, setIsPlaying] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [currentTrack, setCurrentTrack] = useState<CurrentTrack | null>(null)
+  const [volume, setVolumeState] = useState(1)
 
   useEffect(() => {
     const loadCurrentTrack = () => {
@@ -40,20 +43,28 @@ export function RadioPlayerProvider({ children }: { children: ReactNode }) {
     return () => clearInterval(interval)
   }, [])
 
+  const setVolume = (value: number) => {
+    setVolumeState(value)
+    if (audioRef.current) {
+      audioRef.current.volume = value
+      audioRef.current.muted = value === 0
+    }
+  }
+
   const toggleStream = () => {
     if (!audioRef.current) {
       const audio = new Audio(STREAM_URL)
       audio.preload = "none"
-      audio.volume = 1
-      audio.muted = false
+      audio.volume = volume
+      audio.muted = volume === 0
       audio.addEventListener("waiting", () => setIsLoading(true))
       audio.addEventListener("playing", () => setIsLoading(false))
       audioRef.current = audio
     }
 
     const audio = audioRef.current
-    audio.muted = false
-    audio.volume = 1
+    audio.volume = volume
+    audio.muted = volume === 0
 
     if (isPlaying) {
       audio.pause()
@@ -69,7 +80,7 @@ export function RadioPlayerProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <RadioPlayerContext.Provider value={{ isPlaying, isLoading, currentTrack, toggleStream }}>
+    <RadioPlayerContext.Provider value={{ isPlaying, isLoading, currentTrack, volume, setVolume, toggleStream }}>
       {children}
     </RadioPlayerContext.Provider>
   )

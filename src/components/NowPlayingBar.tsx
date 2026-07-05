@@ -1,10 +1,13 @@
 import Icon from "@/components/ui/icon"
+import { Slider } from "@/components/ui/slider"
 import { useRadioPlayer } from "@/contexts/RadioPlayerContext"
 
 export function NowPlayingBar() {
-  const { isPlaying, isLoading, currentTrack, toggleStream } = useRadioPlayer()
+  const { isPlaying, isLoading, currentTrack, volume, setVolume, toggleStream } = useRadioPlayer()
 
   if (!isPlaying) return null
+
+  const toggleMute = () => setVolume(volume === 0 ? 1 : 0)
 
   return (
     <div className="fixed inset-x-0 bottom-0 z-50 border-t border-white/10 bg-[#111111]/95 backdrop-blur-md">
@@ -36,7 +39,20 @@ export function NowPlayingBar() {
           </p>
         </div>
 
-        <Icon name="Radio" size={18} className="shrink-0 text-gray-500" />
+        <div className="hidden sm:flex shrink-0 items-center gap-2 w-32">
+          <button onClick={toggleMute} className="text-gray-400 hover:text-white transition-colors">
+            <Icon name={volume === 0 ? "VolumeX" : volume < 0.5 ? "Volume1" : "Volume2"} size={18} />
+          </button>
+          <Slider
+            value={[volume * 100]}
+            max={100}
+            step={1}
+            onValueChange={([v]) => setVolume(v / 100)}
+            className="w-20"
+          />
+        </div>
+
+        <Icon name="Radio" size={18} className="hidden sm:block shrink-0 text-gray-500" />
       </div>
     </div>
   )
