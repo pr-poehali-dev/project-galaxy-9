@@ -193,7 +193,9 @@ export function ChartSection() {
                       <p className="truncate font-medium text-white">{item.title || "—"}</p>
                       <p className="truncate text-sm text-gray-400">{item.artist || "Wave FM"}</p>
                     </div>
-                    <span className="shrink-0 text-xs text-gray-500">{item.time}</span>
+                    <span className="shrink-0 text-base font-medium text-gray-400">
+                      {item.time?.slice(0, 5)}
+                    </span>
                   </div>
                 ))}
               </div>
