@@ -14,7 +14,7 @@ export default function Index() {
         <ChartSection />
         <PartnersSection />
         <footer id="contacts" className="py-8 text-center text-sm text-gray-400">
-          Wave FM 104.5 • Твоя волна звучит{" "}
+          Wave FM • Твоя волна звучит{" "}
           <span className="font-medium text-white">24 часа в сутки.</span>
         </footer>
       </main>

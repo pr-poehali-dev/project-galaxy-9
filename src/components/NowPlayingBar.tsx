@@ -31,7 +31,7 @@ export function NowPlayingBar() {
         </div>
 
         <div className="min-w-0 flex-1">
-          <p className="truncate text-xs font-medium text-violet-400">В ЭФИРЕ · Wave FM 104.5</p>
+          <p className="truncate text-xs font-medium text-violet-400">В ЭФИРЕ · Wave FM</p>
           <p className="truncate text-sm font-medium text-white">
             {currentTrack?.title
               ? `${currentTrack.artist ? currentTrack.artist + " — " : ""}${currentTrack.title}`

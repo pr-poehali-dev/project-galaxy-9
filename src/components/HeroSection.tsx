@@ -14,7 +14,7 @@ export function HeroSection() {
         <span className="text-gray-300">
           {currentTrack?.title
             ? `${currentTrack.artist ? currentTrack.artist + " — " : ""}${currentTrack.title}`
-            : "104.5 FM • музыка без перерыва"}
+            : "музыка без перерыва"}
         </span>
         <Icon name="Radio" size={16} className="text-gray-400" />
       </div>
