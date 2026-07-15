@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useRef, useState, ReactNode } from "react"
 
-const STREAM_URL = "https://myradio24.org/19486"
+const STREAM_URL = "https://myradio24.org/5654"
 const PLAYLIST_API = "https://functions.poehali.dev/6cc1d340-a31e-4b50-ae1e-5b33f37cae78"
 
 interface CurrentTrack {

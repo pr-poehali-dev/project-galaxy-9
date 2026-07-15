@@ -5,7 +5,8 @@ from datetime import date
 
 import psycopg2
 
-STATUS_URL = "https://myradio24.org/users/19486/status.json"
+STREAM_ID = "5654"
+STATUS_URL = f"https://myradio24.org/users/{STREAM_ID}/status.json"
 
 
 def handler(event: dict, context) -> dict:
@@ -44,7 +45,7 @@ def handler(event: dict, context) -> dict:
     seen = set()
     for item in raw_songs:
         song = item.get('song', '')
-        if not song or song.strip().lower() == 'wave fm':
+        if not song or song.strip().lower().startswith('wave fm'):
             continue
         key = (song, item.get('time'))
         if key in seen:
@@ -80,21 +81,21 @@ def handler(event: dict, context) -> dict:
         for t in fresh_tracks:
             cur.execute(
                 f"""
-                INSERT INTO "{schema}".radio_play_history (play_date, play_time, artist, title, cover, song_id)
-                VALUES (%s, %s, %s, %s, %s, %s)
-                ON CONFLICT (play_date, play_time, song_id) DO NOTHING
+                INSERT INTO "{schema}".radio_play_history (play_date, play_time, artist, title, cover, song_id, stream_id)
+                VALUES (%s, %s, %s, %s, %s, %s, %s)
+                ON CONFLICT (play_date, play_time, song_id, stream_id) DO NOTHING
                 """,
-                (today, t['time'], t['artist'], t['title'], t['cover'], t['song_id'])
+                (today, t['time'], t['artist'], t['title'], t['cover'], t['song_id'], STREAM_ID)
             )
 
         cur.execute(
             f"""
             SELECT play_time, artist, title, cover
             FROM "{schema}".radio_play_history
-            WHERE play_date = %s
+            WHERE play_date = %s AND stream_id = %s
             ORDER BY play_time ASC
             """,
-            (today,)
+            (today, STREAM_ID)
         )
         rows = cur.fetchall()
         playlist = [
