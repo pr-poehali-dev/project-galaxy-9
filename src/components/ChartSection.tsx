@@ -5,21 +5,21 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 const PLAYLIST_API = "https://functions.poehali.dev/6cc1d340-a31e-4b50-ae1e-5b33f37cae78"
 
 const tracks = [
-  { pos: 1, title: "Шадэ", artist: "By Индия, Xcho, MOT", trend: "up" },
-  { pos: 2, title: "KARMA", artist: "ЕГОР КРИД, Artik & Asti", trend: "up" },
-  { pos: 3, title: "GAZ", artist: "ZIVERT", trend: "same" },
-  { pos: 4, title: "Давай не ждать", artist: "Мари Краймбрери", trend: "up" },
-  { pos: 5, title: "Хэппи Энд", artist: "Сергей Лазарев, Полина Гагарина", trend: "down" },
-  { pos: 6, title: "Проще", artist: "Ёлка", trend: "up" },
+  { pos: 1, title: "Давай не ждать", artist: "Мари Краймбрери", trend: "up" },
+  { pos: 2, title: "Хэппи Энд", artist: "Сергей Лазарев, Полина Гагарина", trend: "up" },
+  { pos: 3, title: "На малиновой луне", artist: "Моя Мишель", trend: "up" },
+  { pos: 4, title: "Невероятно", artist: "Zvonkiy", trend: "up" },
+  { pos: 5, title: "Шадэ", artist: "By Индия, Xcho, MOT", trend: "down" },
+  { pos: 6, title: "8901", artist: "SERYABKINA, Dimma Urih", trend: "up" },
   { pos: 7, title: "Ртуть", artist: "Ваня Дмитриенко", trend: "same" },
-  { pos: 8, title: "Феникс", artist: "BEARWOLF", trend: "down" },
-  { pos: 9, title: "Кассеты", artist: "LYRIQ", trend: "up" },
-  { pos: 10, title: "Намёк на нас", artist: "MOT", trend: "same" },
-  { pos: 11, title: "Малахит", artist: "Винтаж", trend: "up" },
-  { pos: 12, title: "Leto", artist: "Jony, Feduk", trend: "down" },
-  { pos: 13, title: "Эпилог", artist: "ANNA ASTI, Дима Билан", trend: "up" },
-  { pos: 14, title: "Довольна", artist: "Nemiga", trend: "same" },
-  { pos: 15, title: "Тону", artist: "HOLLYFLAME", trend: "down" },
+  { pos: 8, title: "Leto", artist: "Jony, Feduk", trend: "up" },
+  { pos: 9, title: "Малахит", artist: "Винтаж", trend: "up" },
+  { pos: 10, title: "KARMA", artist: "Егор Крид, Artik & Asti", trend: "down" },
+  { pos: 11, title: "Заново", artist: "MARY GU", trend: "up" },
+  { pos: 12, title: "Тону", artist: "HOLLYFLAME", trend: "up" },
+  { pos: 13, title: "Намёк на нас", artist: "MOT", trend: "down" },
+  { pos: 14, title: "Кассеты", artist: "LYRIQ", trend: "down" },
+  { pos: 15, title: "Эпилог", artist: "ANNA ASTI, Дима Билан", trend: "down" },
 ]
 
 const trendConfig: Record<string, { icon: string; color: string }> = {
