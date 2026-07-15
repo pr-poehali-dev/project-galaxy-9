@@ -148,23 +148,22 @@ export function ChartSection() {
                       )}
                     </button>
                     <div className="min-w-0 flex-1">
-                      <p className="truncate font-medium text-white flex items-center gap-2">
-                        <span className="truncate">{track.title}</span>
-                        {track.isNew && (
-                          <span className="shrink-0 rounded-full bg-violet-600 px-1.5 py-0.5 text-[10px] font-bold text-white">
-                            NEW
-                          </span>
-                        )}
-                      </p>
+                      <p className="truncate font-medium text-white">{track.title}</p>
                       <p className="truncate text-sm text-gray-400">
                         {notFoundPos === track.pos ? "Превью недоступно" : track.artist}
                       </p>
                     </div>
-                    <Icon
-                      name={trend.icon}
-                      size={14}
-                      className={`${trend.color} ${trend.className ?? ""}`}
-                    />
+                    {track.isNew ? (
+                      <span className="shrink-0 rounded-full bg-violet-600 px-1.5 py-0.5 text-[10px] font-bold text-white">
+                        NEW
+                      </span>
+                    ) : (
+                      <Icon
+                        name={trend.icon}
+                        size={14}
+                        className={`${trend.color} ${trend.className ?? ""}`}
+                      />
+                    )}
                   </div>
                 )
               })}
