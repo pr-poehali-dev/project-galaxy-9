@@ -10,7 +10,7 @@ const tracks = [
   { pos: 3, title: "На малиновой луне", artist: "Моя Мишель", trend: "up" },
   { pos: 4, title: "Невероятно", artist: "Zvonkiy", trend: "up" },
   { pos: 5, title: "Шадэ", artist: "By Индия, Xcho, MOT", trend: "down" },
-  { pos: 6, title: "8901", artist: "SERYABKINA, Dimma Urih", trend: "up" },
+  { pos: 6, title: "8901", artist: "SERYABKINA, Dimma Urih", trend: "up", isNew: true },
   { pos: 7, title: "Ртуть", artist: "Ваня Дмитриенко", trend: "same" },
   { pos: 8, title: "Leto", artist: "Jony, Feduk", trend: "up" },
   { pos: 9, title: "Малахит", artist: "Винтаж", trend: "up" },
@@ -22,9 +22,9 @@ const tracks = [
   { pos: 15, title: "Эпилог", artist: "ANNA ASTI, Дима Билан", trend: "down" },
 ]
 
-const trendConfig: Record<string, { icon: string; color: string }> = {
-  up: { icon: "TrendingUp", color: "text-emerald-400" },
-  down: { icon: "TrendingDown", color: "text-red-400" },
+const trendConfig: Record<string, { icon: string; color: string; className?: string }> = {
+  up: { icon: "Triangle", color: "text-emerald-400", className: "fill-emerald-400" },
+  down: { icon: "Triangle", color: "text-red-400", className: "fill-red-400 rotate-180" },
   same: { icon: "Minus", color: "text-gray-500" },
 }
 
@@ -148,12 +148,23 @@ export function ChartSection() {
                       )}
                     </button>
                     <div className="min-w-0 flex-1">
-                      <p className="truncate font-medium text-white">{track.title}</p>
+                      <p className="truncate font-medium text-white flex items-center gap-2">
+                        <span className="truncate">{track.title}</span>
+                        {track.isNew && (
+                          <span className="shrink-0 rounded-full bg-violet-600 px-1.5 py-0.5 text-[10px] font-bold text-white">
+                            NEW
+                          </span>
+                        )}
+                      </p>
                       <p className="truncate text-sm text-gray-400">
                         {notFoundPos === track.pos ? "Превью недоступно" : track.artist}
                       </p>
                     </div>
-                    <Icon name={trend.icon} size={18} className={trend.color} />
+                    <Icon
+                      name={trend.icon}
+                      size={14}
+                      className={`${trend.color} ${trend.className ?? ""}`}
+                    />
                   </div>
                 )
               })}
