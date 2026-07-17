@@ -11,7 +11,7 @@ STATUS_URL = f"https://myradio24.org/users/{STREAM_ID}/status.json"
 
 def handler(event: dict, context) -> dict:
     """Получает текущий трек радиостанции Wave FM с MyRadio24, сохраняет историю
-    сыгранных треков в БД и отдаёт на фронтенд плейлист за весь текущий день."""
+    сыгранных треков в БД и отдаёт на фронтенд плейлист за последние 24 часа."""
     if event.get('httpMethod') == 'OPTIONS':
         return {
             'statusCode': 200,
@@ -90,16 +90,17 @@ def handler(event: dict, context) -> dict:
 
         cur.execute(
             f"""
-            SELECT play_time, artist, title, cover
+            SELECT play_date, play_time, artist, title, cover
             FROM "{schema}".radio_play_history
-            WHERE play_date = %s AND stream_id = %s
-            ORDER BY play_time ASC
+            WHERE (play_date + play_time::time) >= (NOW() - INTERVAL '24 hours')
+              AND stream_id = %s
+            ORDER BY play_date ASC, play_time ASC
             """,
-            (today, STREAM_ID)
+            (STREAM_ID,)
         )
         rows = cur.fetchall()
         playlist = [
-            {'time': r[0], 'artist': r[1], 'title': r[2], 'cover': r[3]}
+            {'date': str(r[0]), 'time': r[1], 'artist': r[2], 'title': r[3], 'cover': r[4]}
             for r in rows
         ]
         cur.close()

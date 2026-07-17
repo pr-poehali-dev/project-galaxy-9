@@ -46,10 +46,19 @@ const decodeHtml = (text: string) => {
 }
 
 interface PlaylistItem {
+  date?: string
   time: string
   artist: string
   title: string
   cover: string
+}
+
+const formatPlaylistDate = (dateStr?: string) => {
+  if (!dateStr) return ""
+  const today = new Date().toISOString().slice(0, 10)
+  if (dateStr === today) return ""
+  const [, month, day] = dateStr.split("-")
+  return `${day}.${month} · `
 }
 
 export function ChartSection() {
@@ -59,7 +68,31 @@ export function ChartSection() {
   const [playingPos, setPlayingPos] = useState<number | null>(null)
   const [previewLoadingPos, setPreviewLoadingPos] = useState<number | null>(null)
   const [notFoundPos, setNotFoundPos] = useState<number | null>(null)
+  const [covers, setCovers] = useState<Record<number, string>>({})
   const audioRef = useState(() => new Audio())[0]
+
+  useEffect(() => {
+    let cancelled = false
+    tracks.forEach(async (track) => {
+      try {
+        const mainArtist = track.artist.split(",")[0].trim()
+        const query = encodeURIComponent(`${mainArtist} ${track.title}`)
+        const res = await fetch(
+          `https://itunes.apple.com/search?term=${query}&media=music&limit=1`
+        )
+        const data = await res.json()
+        const artwork = data.results?.[0]?.artworkUrl100?.replace("100x100", "300x300")
+        if (artwork && !cancelled) {
+          setCovers((prev) => ({ ...prev, [track.pos]: artwork }))
+        }
+      } catch {
+        // ignore
+      }
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
   useEffect(() => {
     const onEnd = () => setPlayingPos(null)
@@ -138,7 +171,7 @@ export function ChartSection() {
               Чарт
             </TabsTrigger>
             <TabsTrigger value="playlist" className="data-[state=active]:bg-violet-600 data-[state=active]:text-white">
-              Плейлист эфира
+              Плейлист за 24 часа
             </TabsTrigger>
           </TabsList>
 
@@ -152,18 +185,35 @@ export function ChartSection() {
                     className="group flex items-center gap-4 px-5 py-3 transition-colors hover:bg-violet-500/10"
                   >
                     <span className="w-8 text-center text-lg font-bold text-violet-400">{track.pos}</span>
-                    <button
-                      onClick={() => playTrack(track.pos, track.title, track.artist)}
-                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-violet-600/20 text-violet-300 transition-colors hover:bg-violet-600 hover:text-white"
-                    >
-                      {previewLoadingPos === track.pos ? (
-                        <Icon name="Loader2" size={14} className="animate-spin" />
-                      ) : playingPos === track.pos ? (
-                        <Icon name="Pause" size={14} className="fill-current" />
+                    <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-lg bg-violet-600/20">
+                      {covers[track.pos] ? (
+                        <img
+                          src={covers[track.pos]}
+                          alt={track.title}
+                          className="h-full w-full object-cover"
+                        />
                       ) : (
-                        <Icon name="Play" size={14} className="fill-current ml-0.5" />
+                        <div className="flex h-full w-full items-center justify-center">
+                          <Icon name="Music2" size={14} className="text-violet-300" />
+                        </div>
                       )}
-                    </button>
+                      <button
+                        onClick={() => playTrack(track.pos, track.title, track.artist)}
+                        className={`absolute inset-0 flex items-center justify-center bg-black/50 text-white transition-opacity hover:opacity-100 ${
+                          playingPos === track.pos || previewLoadingPos === track.pos
+                            ? "opacity-100"
+                            : "opacity-0"
+                        }`}
+                      >
+                        {previewLoadingPos === track.pos ? (
+                          <Icon name="Loader2" size={14} className="animate-spin" />
+                        ) : playingPos === track.pos ? (
+                          <Icon name="Pause" size={14} className="fill-current" />
+                        ) : (
+                          <Icon name="Play" size={14} className="fill-current ml-0.5" />
+                        )}
+                      </button>
+                    </div>
                     <div className="min-w-0 flex-1">
                       <p className="truncate font-medium text-white">{track.title}</p>
                       <p className="truncate text-sm text-gray-400">
@@ -221,6 +271,7 @@ export function ChartSection() {
                       <p className="truncate text-sm text-gray-400">{item.artist ? decodeHtml(item.artist) : "Wave FM"}</p>
                     </div>
                     <span className="shrink-0 text-base font-medium text-gray-400">
+                      {formatPlaylistDate(item.date)}
                       {item.time?.slice(0, 5)}
                     </span>
                   </div>
