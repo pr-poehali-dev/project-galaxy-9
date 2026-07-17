@@ -38,6 +38,10 @@ const decodeHtml = (text: string) => {
       .replace(/&quot;/g, '"')
       .replace(/&amp;/g, "&")
   }
+  result = result
+    .replace(/[[(]?\s*drivemusic\.me\s*[\])]?/gi, "")
+    .replace(/\s{2,}/g, " ")
+    .trim()
   return result
 }
 
