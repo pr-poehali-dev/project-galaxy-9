@@ -21,6 +21,7 @@ const RadioPlayerContext = createContext<RadioPlayerState | null>(null)
 
 export function RadioPlayerProvider({ children }: { children: ReactNode }) {
   const audioRef = useRef<HTMLAudioElement | null>(null)
+  const manualStopRef = useRef(true)
   const [isPlaying, setIsPlaying] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [currentTrack, setCurrentTrack] = useState<CurrentTrack | null>(null)
@@ -59,6 +60,24 @@ export function RadioPlayerProvider({ children }: { children: ReactNode }) {
       audio.muted = volume === 0
       audio.addEventListener("waiting", () => setIsLoading(true))
       audio.addEventListener("playing", () => setIsLoading(false))
+      audio.addEventListener("error", () => {
+        if (manualStopRef.current) return
+        setIsLoading(true)
+        audio.load()
+        audio
+          .play()
+          .then(() => setIsLoading(false))
+          .catch(() => setIsLoading(false))
+      })
+      audio.addEventListener("stalled", () => {
+        if (manualStopRef.current) return
+        audio.load()
+        audio.play().catch(() => {})
+      })
+      audio.addEventListener("ended", () => {
+        if (manualStopRef.current) return
+        audio.play().catch(() => {})
+      })
       audioRef.current = audio
     }
 
@@ -67,9 +86,11 @@ export function RadioPlayerProvider({ children }: { children: ReactNode }) {
     audio.muted = volume === 0
 
     if (isPlaying) {
+      manualStopRef.current = true
       audio.pause()
       setIsPlaying(false)
     } else {
+      manualStopRef.current = false
       setIsLoading(true)
       audio
         .play()
