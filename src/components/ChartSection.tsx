@@ -28,11 +28,18 @@ const trendConfig: Record<string, { icon: string; color: string; className?: str
   same: { icon: "Minus", color: "text-gray-500" },
 }
 
-const decodeHtml = (text: string) =>
-  text
-    .replace(/&#0?39;/g, "'")
-    .replace(/&amp;/g, "&")
-    .replace(/&quot;/g, '"')
+const decodeHtml = (text: string) => {
+  let result = text
+  let previous = ""
+  while (previous !== result) {
+    previous = result
+    result = result
+      .replace(/&#0?39;/g, "'")
+      .replace(/&quot;/g, '"')
+      .replace(/&amp;/g, "&")
+  }
+  return result
+}
 
 interface PlaylistItem {
   time: string
