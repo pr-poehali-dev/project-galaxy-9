@@ -44,6 +44,21 @@ export function RadioPlayerProvider({ children }: { children: ReactNode }) {
     return () => clearInterval(interval)
   }, [])
 
+  useEffect(() => {
+    const defaultTitle = "Радио Wave FM Россия"
+    if (isPlaying && currentTrack?.title) {
+      const label = currentTrack.artist
+        ? `${currentTrack.artist} — ${currentTrack.title}`
+        : currentTrack.title
+      document.title = `▶ ${label}`
+    } else {
+      document.title = defaultTitle
+    }
+    return () => {
+      document.title = defaultTitle
+    }
+  }, [isPlaying, currentTrack])
+
   const setVolume = (value: number) => {
     setVolumeState(value)
     if (audioRef.current) {
