@@ -1,9 +1,11 @@
 import json
 import os
 import urllib.request
-from datetime import date
+from datetime import datetime, timedelta, timezone
 
 import psycopg2
+
+MSK = timezone(timedelta(hours=3))
 
 STREAM_ID = "5654"
 STATUS_URL = f"https://myradio24.org/users/{STREAM_ID}/status.json"
@@ -69,7 +71,7 @@ def handler(event: dict, context) -> dict:
         })
 
     schema = os.environ.get('MAIN_DB_SCHEMA', 'public')
-    today = date.today()
+    today = datetime.now(MSK).date()
     playlist = []
 
     try:
