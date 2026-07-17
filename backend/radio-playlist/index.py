@@ -94,6 +94,7 @@ def handler(event: dict, context) -> dict:
             FROM "{schema}".radio_play_history
             WHERE play_date = %s
               AND stream_id = %s
+              AND hidden = FALSE
             ORDER BY play_date ASC, play_time ASC
             """,
             (today, STREAM_ID)
