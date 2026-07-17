@@ -53,14 +53,6 @@ interface PlaylistItem {
   cover: string
 }
 
-const formatPlaylistDate = (dateStr?: string) => {
-  if (!dateStr) return ""
-  const today = new Date().toISOString().slice(0, 10)
-  if (dateStr === today) return ""
-  const [, month, day] = dateStr.split("-")
-  return `${day}.${month} · `
-}
-
 export function ChartSection() {
   const [playlist, setPlaylist] = useState<PlaylistItem[]>([])
   const [loading, setLoading] = useState(false)
@@ -69,6 +61,7 @@ export function ChartSection() {
   const [previewLoadingPos, setPreviewLoadingPos] = useState<number | null>(null)
   const [notFoundPos, setNotFoundPos] = useState<number | null>(null)
   const [covers, setCovers] = useState<Record<number, string>>({})
+  const [playlistCovers, setPlaylistCovers] = useState<Record<string, string>>({})
   const audioRef = useState(() => new Audio())[0]
 
   useEffect(() => {
@@ -143,14 +136,38 @@ export function ChartSection() {
     setError(false)
     fetch(PLAYLIST_API)
       .then((res) => res.json())
-      .then((data) => setPlaylist(data.playlist?.slice().reverse() ?? []))
+      .then((data) => {
+        const items: PlaylistItem[] = data.playlist?.slice().reverse() ?? []
+        setPlaylist(items)
+
+        items
+          .filter((item) => !item.cover)
+          .forEach(async (item) => {
+            const key = `${item.artist}-${item.title}`
+            if (playlistCovers[key]) return
+            try {
+              const mainArtist = decodeHtml(item.artist).split(",")[0].trim()
+              const query = encodeURIComponent(`${mainArtist} ${decodeHtml(item.title)}`)
+              const res = await fetch(
+                `https://itunes.apple.com/search?term=${query}&media=music&limit=1`
+              )
+              const trackData = await res.json()
+              const artwork = trackData.results?.[0]?.artworkUrl100?.replace("100x100", "300x300")
+              if (artwork) {
+                setPlaylistCovers((prev) => ({ ...prev, [key]: artwork }))
+              }
+            } catch {
+              // ignore
+            }
+          })
+      })
       .catch(() => setError(true))
       .finally(() => setLoading(false))
   }
 
   useEffect(() => {
     loadPlaylist()
-    const interval = setInterval(loadPlaylist, 30000)
+    const interval = setInterval(loadPlaylist, 10000)
     return () => clearInterval(interval)
   }, [])
 
@@ -257,11 +274,14 @@ export function ChartSection() {
               )}
 
               <div className="divide-y divide-white/5 max-h-[480px] overflow-y-auto">
-                {playlist.map((item, idx) => (
+                {playlist.map((item, idx) => {
+                  const fallbackCover = playlistCovers[`${item.artist}-${item.title}`]
+                  const coverUrl = item.cover || fallbackCover
+                  return (
                   <div key={`${item.time}-${idx}`} className="flex items-center gap-4 px-5 py-3">
                     <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-violet-600/20">
-                      {item.cover ? (
-                        <img src={item.cover} alt={item.title} className="h-full w-full object-cover" />
+                      {coverUrl ? (
+                        <img src={coverUrl} alt={item.title} className="h-full w-full object-cover" />
                       ) : (
                         <Icon name="Music2" size={18} className="text-violet-300" />
                       )}
@@ -271,11 +291,11 @@ export function ChartSection() {
                       <p className="truncate text-sm text-gray-400">{item.artist ? decodeHtml(item.artist) : "Wave FM"}</p>
                     </div>
                     <span className="shrink-0 text-base font-medium text-gray-400">
-                      {formatPlaylistDate(item.date)}
                       {item.time?.slice(0, 5)}
                     </span>
                   </div>
-                ))}
+                  )
+                })}
               </div>
             </div>
           </TabsContent>
