@@ -28,6 +28,12 @@ const trendConfig: Record<string, { icon: string; color: string; className?: str
   same: { icon: "Minus", color: "text-gray-500" },
 }
 
+const decodeHtml = (text: string) =>
+  text
+    .replace(/&#0?39;/g, "'")
+    .replace(/&amp;/g, "&")
+    .replace(/&quot;/g, '"')
+
 interface PlaylistItem {
   time: string
   artist: string
@@ -200,8 +206,8 @@ export function ChartSection() {
                       )}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="truncate font-medium text-white">{item.title || "—"}</p>
-                      <p className="truncate text-sm text-gray-400">{item.artist || "Wave FM"}</p>
+                      <p className="truncate font-medium text-white">{item.title ? decodeHtml(item.title) : "—"}</p>
+                      <p className="truncate text-sm text-gray-400">{item.artist ? decodeHtml(item.artist) : "Wave FM"}</p>
                     </div>
                     <span className="shrink-0 text-base font-medium text-gray-400">
                       {item.time?.slice(0, 5)}
