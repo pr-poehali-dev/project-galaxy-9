@@ -56,7 +56,6 @@ interface PlaylistItem {
 export function ChartSection() {
   const [playlist, setPlaylist] = useState<PlaylistItem[]>([])
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(false)
   const [playingPos, setPlayingPos] = useState<number | null>(null)
   const [previewLoadingPos, setPreviewLoadingPos] = useState<number | null>(null)
   const [notFoundPos, setNotFoundPos] = useState<number | null>(null)
@@ -133,7 +132,6 @@ export function ChartSection() {
 
   const loadPlaylist = () => {
     setLoading(true)
-    setError(false)
     fetch(PLAYLIST_API)
       .then((res) => res.json())
       .then((data) => {
@@ -161,7 +159,7 @@ export function ChartSection() {
             }
           })
       })
-      .catch(() => setError(true))
+      .catch(() => {})
       .finally(() => setLoading(false))
   }
 
@@ -262,14 +260,7 @@ export function ChartSection() {
                 </div>
               )}
 
-              {error && (
-                <div className="flex flex-col items-center gap-2 px-5 py-10 text-gray-400">
-                  <Icon name="AlertCircle" size={20} className="text-red-400" />
-                  Не удалось загрузить плейлист. Попробуйте позже.
-                </div>
-              )}
-
-              {!loading && !error && playlist.length === 0 && (
+              {!loading && playlist.length === 0 && (
                 <div className="px-5 py-10 text-center text-gray-400">Пока нет данных об эфире</div>
               )}
 
