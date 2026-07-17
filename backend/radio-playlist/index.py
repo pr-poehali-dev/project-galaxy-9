@@ -93,9 +93,15 @@ def handler(event: dict, context) -> dict:
         cur.execute(
             f"""
             SELECT play_date, play_time, artist, title, cover
-            FROM "{schema}".radio_play_history
-            WHERE stream_id = %s
-              AND hidden = FALSE
+            FROM (
+                SELECT DISTINCT ON (play_date, play_time, lower(artist), lower(title))
+                    play_date, play_time, artist, title, cover
+                FROM "{schema}".radio_play_history
+                WHERE stream_id = %s
+                  AND hidden = FALSE
+                ORDER BY play_date, play_time, lower(artist), lower(title),
+                         (cover <> '') DESC
+            ) dedup
             ORDER BY play_date DESC, play_time DESC
             LIMIT 50
             """,
