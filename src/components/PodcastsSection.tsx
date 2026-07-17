@@ -53,25 +53,25 @@ export function PodcastsSection() {
 
         <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md divide-y divide-white/5">
           {schedule.map((item) => (
-            <div key={item.day} className="flex flex-col gap-3 px-5 py-4 sm:flex-row sm:items-center">
-              <span className="shrink-0 sm:w-40 font-semibold text-white">{item.day}</span>
+            <div key={item.day} className="flex flex-col gap-4 px-5 py-5 sm:flex-row">
+              <span className="shrink-0 pt-1 font-semibold text-white sm:w-40">{item.day}</span>
               {item.shows.length === 0 ? (
                 <span className="text-sm text-gray-500">Нет подкастов</span>
               ) : (
-                <div className="flex flex-1 flex-col gap-2 sm:flex-row sm:flex-wrap">
+                <div className="flex flex-1 flex-col gap-3">
                   {item.shows.map((show) => (
                     <div
                       key={show.title + show.time}
-                      className="flex items-center gap-3 rounded-2xl bg-violet-600/15 p-2 pr-4"
+                      className="flex items-center gap-4 rounded-2xl bg-violet-600/15 p-3"
                     >
                       <img
                         src={show.cover}
                         alt={show.title}
-                        className="h-14 w-14 shrink-0 rounded-xl object-cover"
+                        className="h-20 w-20 shrink-0 rounded-xl object-cover"
                       />
-                      <div className="flex flex-col">
-                        <span className="text-sm font-semibold text-white">{show.title}</span>
-                        <span className="text-sm text-gray-400">{show.time}</span>
+                      <div className="flex flex-col gap-1">
+                        <span className="text-xl font-bold text-white">{show.title}</span>
+                        <span className="text-lg text-gray-300">{show.time}</span>
                       </div>
                     </div>
                   ))}
