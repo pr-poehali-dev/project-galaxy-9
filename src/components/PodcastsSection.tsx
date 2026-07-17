@@ -54,7 +54,7 @@ export function PodcastsSection() {
         <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md divide-y divide-white/5">
           {schedule.map((item) => (
             <div key={item.day} className="flex flex-col gap-4 px-5 py-5 sm:flex-row">
-              <span className="shrink-0 pt-1 font-semibold text-white sm:w-40">{item.day}</span>
+              <span className="shrink-0 pt-1 text-lg font-bold uppercase text-white sm:w-40">{item.day}</span>
               {item.shows.length === 0 ? (
                 <span className="text-sm text-gray-500">Нет подкастов</span>
               ) : (
