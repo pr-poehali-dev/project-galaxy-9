@@ -19,6 +19,22 @@ interface RadioPlayerState {
 
 const RadioPlayerContext = createContext<RadioPlayerState | null>(null)
 
+const decodeTrackText = (text: string) => {
+  let result = text
+  let previous = ""
+  while (previous !== result) {
+    previous = result
+    result = result
+      .replace(/&#0?39;/g, "'")
+      .replace(/&quot;/g, '"')
+      .replace(/&amp;/g, "&")
+  }
+  return result
+    .replace(/[[(]?\s*drivemusic\.me\s*[\])]?/gi, "")
+    .replace(/\s{2,}/g, " ")
+    .trim()
+}
+
 export function RadioPlayerProvider({ children }: { children: ReactNode }) {
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const manualStopRef = useRef(true)
@@ -33,7 +49,10 @@ export function RadioPlayerProvider({ children }: { children: ReactNode }) {
         .then((res) => res.json())
         .then((data) => {
           if (data.current?.title) {
-            setCurrentTrack(data.current)
+            setCurrentTrack({
+              artist: decodeTrackText(data.current.artist || ""),
+              title: decodeTrackText(data.current.title),
+            })
           }
         })
         .catch(() => {})
