@@ -10,9 +10,9 @@ interface DaySchedule {
 }
 
 const COVERS = {
-  alarm: "https://cdn.poehali.dev/projects/65e9cb1f-bd87-47d7-8e5e-efe03abd1740/files/9da29584-d54e-4674-b3c4-a0b2ebe5fe85.jpg",
-  hot15: "https://cdn.poehali.dev/projects/65e9cb1f-bd87-47d7-8e5e-efe03abd1740/files/0a37a47c-2605-44f0-ac54-28137228e9bc.jpg",
-  fresh: "https://cdn.poehali.dev/projects/65e9cb1f-bd87-47d7-8e5e-efe03abd1740/files/f65b1500-a42b-44ef-b863-28116be14e4d.jpg",
+  alarm: "https://cdn.poehali.dev/projects/65e9cb1f-bd87-47d7-8e5e-efe03abd1740/files/59b6b0ee-0535-476e-bd8b-c021d1b79f47.jpg",
+  hot15: "https://cdn.poehali.dev/projects/65e9cb1f-bd87-47d7-8e5e-efe03abd1740/files/dfbc3973-2cb4-4353-b376-684d86d1f0cd.jpg",
+  fresh: "https://cdn.poehali.dev/projects/65e9cb1f-bd87-47d7-8e5e-efe03abd1740/files/596f7b9c-f399-4e87-9546-847afa949b31.jpg",
 }
 
 const morningAlarm: Show = { title: "Утренний Будильник", time: "7:00–10:00", cover: COVERS.alarm }
@@ -62,15 +62,17 @@ export function PodcastsSection() {
                   {item.shows.map((show) => (
                     <div
                       key={show.title + show.time}
-                      className="flex items-center gap-2 rounded-full bg-violet-600/15 py-1.5 pl-1.5 pr-3"
+                      className="flex items-center gap-3 rounded-2xl bg-violet-600/15 p-2 pr-4"
                     >
                       <img
                         src={show.cover}
                         alt={show.title}
-                        className="h-7 w-7 shrink-0 rounded-full object-cover"
+                        className="h-14 w-14 shrink-0 rounded-xl object-cover"
                       />
-                      <span className="text-sm font-medium text-white">{show.title}</span>
-                      <span className="text-sm text-gray-400">{show.time}</span>
+                      <div className="flex flex-col">
+                        <span className="text-sm font-semibold text-white">{show.title}</span>
+                        <span className="text-sm text-gray-400">{show.time}</span>
+                      </div>
                     </div>
                   ))}
                 </div>
