@@ -171,7 +171,7 @@ export function ChartSection() {
               Чарт
             </TabsTrigger>
             <TabsTrigger value="playlist" className="data-[state=active]:bg-violet-600 data-[state=active]:text-white">
-              Плейлист за 18 июля
+              Плейлист эфира
             </TabsTrigger>
           </TabsList>
 
