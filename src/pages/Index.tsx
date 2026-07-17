@@ -12,8 +12,8 @@ export default function Index() {
       <main className="min-h-screen bg-[#0a0a0a] pb-20">
         <Header />
         <HeroSection />
-        <ChartSection />
         <PodcastsSection />
+        <ChartSection />
         <PartnersSection />
         <footer id="contacts" className="py-8 text-center text-sm text-gray-400">
           Wave FM • Твоя волна звучит{" "}

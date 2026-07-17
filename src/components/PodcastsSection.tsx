@@ -1,8 +1,7 @@
-import Icon from "@/components/ui/icon"
-
 interface Show {
   title: string
   time: string
+  cover: string
 }
 
 interface DaySchedule {
@@ -10,25 +9,33 @@ interface DaySchedule {
   shows: Show[]
 }
 
+const COVERS = {
+  alarm: "https://cdn.poehali.dev/projects/65e9cb1f-bd87-47d7-8e5e-efe03abd1740/files/9da29584-d54e-4674-b3c4-a0b2ebe5fe85.jpg",
+  hot15: "https://cdn.poehali.dev/projects/65e9cb1f-bd87-47d7-8e5e-efe03abd1740/files/0a37a47c-2605-44f0-ac54-28137228e9bc.jpg",
+  fresh: "https://cdn.poehali.dev/projects/65e9cb1f-bd87-47d7-8e5e-efe03abd1740/files/f65b1500-a42b-44ef-b863-28116be14e4d.jpg",
+}
+
+const morningAlarm: Show = { title: "Утренний Будильник", time: "7:00–10:00", cover: COVERS.alarm }
+
 const schedule: DaySchedule[] = [
-  { day: "Понедельник", shows: [] },
-  { day: "Вторник", shows: [] },
-  { day: "Среда", shows: [] },
-  { day: "Четверг", shows: [] },
+  { day: "Понедельник", shows: [morningAlarm] },
+  { day: "Вторник", shows: [morningAlarm] },
+  { day: "Среда", shows: [morningAlarm] },
+  { day: "Четверг", shows: [morningAlarm] },
   {
     day: "Пятница",
     shows: [
-      { title: "Утренний Будильник", time: "7:00–10:00" },
-      { title: "Горячая Пятнадцатка", time: "19:00–20:00" },
+      morningAlarm,
+      { title: "Горячая Пятнадцатка", time: "19:00–20:00", cover: COVERS.hot15 },
     ],
   },
   {
     day: "Суббота",
-    shows: [{ title: "Fresh Плейлист", time: "12:00–12:30" }],
+    shows: [{ title: "Fresh Плейлист", time: "12:00–12:30", cover: COVERS.fresh }],
   },
   {
     day: "Воскресенье",
-    shows: [{ title: "Горячая Пятнадцатка", time: "14:00–15:00" }],
+    shows: [{ title: "Горячая Пятнадцатка", time: "14:00–15:00", cover: COVERS.hot15 }],
   },
 ]
 
@@ -55,9 +62,13 @@ export function PodcastsSection() {
                   {item.shows.map((show) => (
                     <div
                       key={show.title + show.time}
-                      className="flex items-center gap-2 rounded-full bg-violet-600/15 px-3 py-1.5"
+                      className="flex items-center gap-2 rounded-full bg-violet-600/15 py-1.5 pl-1.5 pr-3"
                     >
-                      <Icon name="Mic2" size={14} className="text-violet-400" />
+                      <img
+                        src={show.cover}
+                        alt={show.title}
+                        className="h-7 w-7 shrink-0 rounded-full object-cover"
+                      />
                       <span className="text-sm font-medium text-white">{show.title}</span>
                       <span className="text-sm text-gray-400">{show.time}</span>
                     </div>
