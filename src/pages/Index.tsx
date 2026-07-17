@@ -2,6 +2,7 @@ import { Header } from "@/components/Header"
 import { HeroSection } from "@/components/HeroSection"
 import { PartnersSection } from "@/components/PartnersSection"
 import { ChartSection } from "@/components/ChartSection"
+import { PodcastsSection } from "@/components/PodcastsSection"
 import { NowPlayingBar } from "@/components/NowPlayingBar"
 import { RadioPlayerProvider } from "@/contexts/RadioPlayerContext"
 
@@ -12,6 +13,7 @@ export default function Index() {
         <Header />
         <HeroSection />
         <ChartSection />
+        <PodcastsSection />
         <PartnersSection />
         <footer id="contacts" className="py-8 text-center text-sm text-gray-400">
           Wave FM • Твоя волна звучит{" "}

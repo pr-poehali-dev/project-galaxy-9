@@ -18,6 +18,9 @@ export function Header() {
         <a href="#chart" className="text-sm text-gray-300 hover:text-white transition-colors">
           Чарт
         </a>
+        <a href="#podcasts" className="text-sm text-gray-300 hover:text-white transition-colors">
+          Подкасты
+        </a>
         <a href="#partners" className="text-sm text-gray-300 hover:text-white transition-colors">
           Партнёры
         </a>
