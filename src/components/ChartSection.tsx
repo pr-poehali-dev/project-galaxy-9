@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react"
 import Icon from "@/components/ui/icon"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
-
-const PLAYLIST_API = "https://functions.poehali.dev/6cc1d340-a31e-4b50-ae1e-5b33f37cae78"
+import { useRadioPlayer } from "@/contexts/RadioPlayerContext"
 
 const tracks = [
   { pos: 1, title: "Давай не ждать", artist: "Мари Краймбрери", trend: "up" },
@@ -45,17 +44,8 @@ const decodeHtml = (text: string) => {
   return result
 }
 
-interface PlaylistItem {
-  date?: string
-  time: string
-  artist: string
-  title: string
-  cover: string
-}
-
 export function ChartSection() {
-  const [playlist, setPlaylist] = useState<PlaylistItem[]>([])
-  const [loading, setLoading] = useState(false)
+  const { playlist, playlistLoading: loading } = useRadioPlayer()
   const [playingPos, setPlayingPos] = useState<number | null>(null)
   const [previewLoadingPos, setPreviewLoadingPos] = useState<number | null>(null)
   const [notFoundPos, setNotFoundPos] = useState<number | null>(null)
@@ -130,44 +120,28 @@ export function ChartSection() {
     }
   }
 
-  const loadPlaylist = () => {
-    setLoading(true)
-    fetch(PLAYLIST_API)
-      .then((res) => res.json())
-      .then((data) => {
-        const items: PlaylistItem[] = data.playlist?.slice().reverse() ?? []
-        setPlaylist(items)
-
-        items
-          .filter((item) => !item.cover)
-          .forEach(async (item) => {
-            const key = `${item.artist}-${item.title}`
-            if (playlistCovers[key]) return
-            try {
-              const mainArtist = decodeHtml(item.artist).split(",")[0].trim()
-              const query = encodeURIComponent(`${mainArtist} ${decodeHtml(item.title)}`)
-              const res = await fetch(
-                `https://itunes.apple.com/search?term=${query}&media=music&limit=1`
-              )
-              const trackData = await res.json()
-              const artwork = trackData.results?.[0]?.artworkUrl100?.replace("100x100", "300x300")
-              if (artwork) {
-                setPlaylistCovers((prev) => ({ ...prev, [key]: artwork }))
-              }
-            } catch {
-              // ignore
-            }
-          })
-      })
-      .catch(() => {})
-      .finally(() => setLoading(false))
-  }
-
   useEffect(() => {
-    loadPlaylist()
-    const interval = setInterval(loadPlaylist, 10000)
-    return () => clearInterval(interval)
-  }, [])
+    playlist
+      .filter((item) => !item.cover)
+      .forEach(async (item) => {
+        const key = `${item.artist}-${item.title}`
+        if (playlistCovers[key]) return
+        try {
+          const mainArtist = decodeHtml(item.artist).split(",")[0].trim()
+          const query = encodeURIComponent(`${mainArtist} ${decodeHtml(item.title)}`)
+          const res = await fetch(
+            `https://itunes.apple.com/search?term=${query}&media=music&limit=1`
+          )
+          const trackData = await res.json()
+          const artwork = trackData.results?.[0]?.artworkUrl100?.replace("100x100", "300x300")
+          if (artwork) {
+            setPlaylistCovers((prev) => ({ ...prev, [key]: artwork }))
+          }
+        } catch {
+          // ignore
+        }
+      })
+  }, [playlist])
 
   return (
     <section id="chart" className="px-4 md:px-8 py-12">

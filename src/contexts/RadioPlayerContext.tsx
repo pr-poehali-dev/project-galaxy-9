@@ -9,10 +9,20 @@ interface CurrentTrack {
   cover: string
 }
 
+export interface PlaylistItem {
+  date?: string
+  time: string
+  artist: string
+  title: string
+  cover: string
+}
+
 interface RadioPlayerState {
   isPlaying: boolean
   isLoading: boolean
   currentTrack: CurrentTrack | null
+  playlist: PlaylistItem[]
+  playlistLoading: boolean
   volume: number
   setVolume: (value: number) => void
   toggleStream: () => void
@@ -42,10 +52,13 @@ export function RadioPlayerProvider({ children }: { children: ReactNode }) {
   const [isPlaying, setIsPlaying] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [currentTrack, setCurrentTrack] = useState<CurrentTrack | null>(null)
+  const [playlist, setPlaylist] = useState<PlaylistItem[]>([])
+  const [playlistLoading, setPlaylistLoading] = useState(false)
   const [volume, setVolumeState] = useState(1)
 
   useEffect(() => {
-    const loadCurrentTrack = () => {
+    const loadData = () => {
+      setPlaylistLoading(true)
       fetch(PLAYLIST_API)
         .then((res) => res.json())
         .then((data) => {
@@ -56,12 +69,16 @@ export function RadioPlayerProvider({ children }: { children: ReactNode }) {
               cover: data.current.cover || "",
             })
           }
+          if (Array.isArray(data.playlist)) {
+            setPlaylist(data.playlist.slice().reverse())
+          }
         })
         .catch(() => {})
+        .finally(() => setPlaylistLoading(false))
     }
 
-    loadCurrentTrack()
-    const interval = setInterval(loadCurrentTrack, 20000)
+    loadData()
+    const interval = setInterval(loadData, 20000)
     return () => clearInterval(interval)
   }, [])
 
@@ -137,7 +154,9 @@ export function RadioPlayerProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <RadioPlayerContext.Provider value={{ isPlaying, isLoading, currentTrack, volume, setVolume, toggleStream }}>
+    <RadioPlayerContext.Provider
+      value={{ isPlaying, isLoading, currentTrack, playlist, playlistLoading, volume, setVolume, toggleStream }}
+    >
       {children}
     </RadioPlayerContext.Provider>
   )
