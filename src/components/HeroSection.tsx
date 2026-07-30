@@ -19,6 +19,25 @@ export function HeroSection() {
         <Icon name="Radio" size={16} className="text-gray-400" />
       </div>
 
+      {currentTrack?.title && (
+        <div className="mb-6 flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-violet-600/20">
+            {currentTrack.cover ? (
+              <img src={currentTrack.cover} alt={currentTrack.title} className="h-full w-full object-cover" />
+            ) : (
+              <Icon name="Music2" size={20} className="text-violet-300" />
+            )}
+          </div>
+          <div className="min-w-0 text-left">
+            <p className="text-xs font-medium text-violet-400">Сейчас играет</p>
+            <p className="truncate font-medium text-white">{currentTrack.title}</p>
+            {currentTrack.artist && (
+              <p className="truncate text-sm text-gray-400">{currentTrack.artist}</p>
+            )}
+          </div>
+        </div>
+      )}
+
       <h1 className="mb-4 max-w-3xl text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white text-balance">
         Wave FM — волна твоей музыки
       </h1>

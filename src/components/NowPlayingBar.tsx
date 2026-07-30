@@ -23,7 +23,15 @@ export function NowPlayingBar() {
           )}
         </button>
 
-        <div className="flex h-8 items-end gap-0.5">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-violet-600/20">
+          {currentTrack?.cover ? (
+            <img src={currentTrack.cover} alt={currentTrack.title} className="h-full w-full object-cover" />
+          ) : (
+            <Icon name="Music2" size={16} className="text-violet-300" />
+          )}
+        </div>
+
+        <div className="hidden h-8 items-end gap-0.5 sm:flex">
           <span className="h-3 w-1 animate-pulse rounded-full bg-violet-400 [animation-delay:0ms]" />
           <span className="h-6 w-1 animate-pulse rounded-full bg-violet-400 [animation-delay:150ms]" />
           <span className="h-4 w-1 animate-pulse rounded-full bg-violet-400 [animation-delay:300ms]" />

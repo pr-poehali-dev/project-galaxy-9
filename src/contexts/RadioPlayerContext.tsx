@@ -6,6 +6,7 @@ const PLAYLIST_API = "https://functions.poehali.dev/6cc1d340-a31e-4b50-ae1e-5b33
 interface CurrentTrack {
   artist: string
   title: string
+  cover: string
 }
 
 interface RadioPlayerState {
@@ -52,6 +53,7 @@ export function RadioPlayerProvider({ children }: { children: ReactNode }) {
             setCurrentTrack({
               artist: decodeTrackText(data.current.artist || ""),
               title: decodeTrackText(data.current.title),
+              cover: data.current.cover || "",
             })
           }
         })
