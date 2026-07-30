@@ -7,7 +7,7 @@ import psycopg2
 
 MSK = timezone(timedelta(hours=3))
 
-STREAM_ID = "5654"
+STREAM_ID = "19486"
 STATUS_URL = f"https://myradio24.org/users/{STREAM_ID}/status.json"
 
 
