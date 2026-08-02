@@ -1,0 +1,1 @@
+UPDATE t_p9820703_project_galaxy_9.radio_play_history SET hidden = TRUE WHERE hidden = FALSE;
