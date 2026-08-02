@@ -17,6 +17,34 @@ export interface PlaylistItem {
   cover: string
 }
 
+const FALLBACK_PLAYLIST: PlaylistItem[] = [
+  { date: "2026-07-31", time: "00:47:53", artist: "Filatov & Karas/DJ Groove", title: "Счастье Есть", cover: "" },
+  { date: "2026-07-31", time: "00:50:16", artist: "Асия, Zvonkiy", title: "Фонари", cover: "" },
+  { date: "2026-07-31", time: "00:53:34", artist: "5Утра", title: "Чуйка", cover: "https://myradio24.org/artists/6f0c13a7a3424328.jpg" },
+  { date: "2026-07-31", time: "00:55:53", artist: "Zivert", title: "В Городе Лето", cover: "https://myradio24.org/artists/76e58f8d0b62db50.jpg" },
+  { date: "2026-07-31", time: "00:57:53", artist: "Alex Warren", title: "Fever dream", cover: "https://myradio24.org/artists/837cfd34d48241e5.jpg" },
+  { date: "2026-07-31", time: "01:00:57", artist: "Blackpink", title: "Jump", cover: "https://myradio24.org/artists/a37b4d0b367e5cfc.jpg" },
+  { date: "2026-07-31", time: "01:04:07", artist: "Дима Билан, Мари Краймбрери", title: "It's My Life", cover: "" },
+  { date: "2026-07-31", time: "01:07:16", artist: "Моя Мишель", title: "На малиновой луне", cover: "https://myradio24.org/artists/bfbefb37eb776942.jpg" },
+  { date: "2026-07-31", time: "01:11:25", artist: "Artik & Asti", title: "Качели", cover: "https://myradio24.org/artists/9966dec3223b9615.jpg" },
+  { date: "2026-07-31", time: "01:15:25", artist: "Сергей Лазарев", title: "Танцуй", cover: "https://myradio24.org/artists/62c930b379a67f15.jpg" },
+  { date: "2026-07-31", time: "01:18:52", artist: "Pizza", title: "Пятница", cover: "https://myradio24.org/artists/50ddb91a3d195e3f.jpg" },
+  { date: "2026-07-31", time: "01:22:16", artist: "Градусы", title: "О Тебе Думаю", cover: "https://myradio24.org/artists/766b5184cafae1f7.jpg" },
+  { date: "2026-07-31", time: "01:26:06", artist: "Jony", title: "Лечу", cover: "https://myradio24.org/artists/f2e3e1ac720e5776.jpg" },
+  { date: "2026-07-31", time: "01:29:07", artist: "Клава Кока", title: "Катастрофа", cover: "https://myradio24.org/artists/8f18c9cd211e5272.jpg" },
+  { date: "2026-07-31", time: "01:31:35", artist: "Братья Грим", title: "Ресницы", cover: "https://myradio24.org/artists/8251c7502125ef93.jpg" },
+  { date: "2026-07-31", time: "01:34:43", artist: "2Маши", title: "Мама, я танцую", cover: "" },
+  { date: "2026-07-31", time: "01:39:07", artist: "Женя Трофимов, Комната культур", title: "Осень (OST «Ландыши. Вторая весна»)", cover: "" },
+  { date: "2026-07-31", time: "01:43:07", artist: "Ofenbach", title: "Miles Away", cover: "https://myradio24.org/artists/8a357b45448af413.jpg" },
+  { date: "2026-07-31", time: "01:45:53", artist: "Stromae", title: "Papaoutai", cover: "https://myradio24.org/artists/e64c4e0bf6559bfc.jpg" },
+  { date: "2026-07-31", time: "01:50:07", artist: "Мот, Jony", title: "Лилии", cover: "" },
+  { date: "2026-07-31", time: "01:53:34", artist: "R3Hab, Sophie And The Giants", title: "All Night", cover: "" },
+  { date: "2026-07-31", time: "01:55:44", artist: "Dj Smash", title: "Моя Любовь 18", cover: "" },
+  { date: "2026-07-31", time: "01:57:44", artist: "Nemiga", title: "Довольна", cover: "https://myradio24.org/artists/7a03966281c25723.jpg" },
+  { date: "2026-07-31", time: "02:00:48", artist: "Cream Soda, Хлеб", title: "Плачу На Техно", cover: "" },
+  { date: "2026-07-31", time: "02:03:44", artist: "Jony, Feduk", title: "Leto", cover: "" },
+]
+
 interface RadioPlayerState {
   isPlaying: boolean
   isLoading: boolean
@@ -51,8 +79,11 @@ export function RadioPlayerProvider({ children }: { children: ReactNode }) {
   const manualStopRef = useRef(true)
   const [isPlaying, setIsPlaying] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [currentTrack, setCurrentTrack] = useState<CurrentTrack | null>(null)
-  const [playlist, setPlaylist] = useState<PlaylistItem[]>([])
+  const [currentTrack, setCurrentTrack] = useState<CurrentTrack | null>(() => {
+    const last = FALLBACK_PLAYLIST[FALLBACK_PLAYLIST.length - 1]
+    return last ? { artist: last.artist, title: last.title, cover: last.cover } : null
+  })
+  const [playlist, setPlaylist] = useState<PlaylistItem[]>(FALLBACK_PLAYLIST)
   const [playlistLoading, setPlaylistLoading] = useState(false)
   const [volume, setVolumeState] = useState(1)
 
