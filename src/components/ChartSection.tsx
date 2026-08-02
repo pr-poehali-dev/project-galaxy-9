@@ -4,21 +4,26 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { useRadioPlayer } from "@/contexts/RadioPlayerContext"
 
 const tracks = [
-  { pos: 1, title: "Давай не ждать", artist: "Мари Краймбрери", trend: "up" },
-  { pos: 2, title: "Хэппи Энд", artist: "Сергей Лазарев, Полина Гагарина", trend: "up" },
-  { pos: 3, title: "На малиновой луне", artist: "Моя Мишель", trend: "up" },
-  { pos: 4, title: "Невероятно", artist: "Zvonkiy", trend: "up" },
-  { pos: 5, title: "Шадэ", artist: "By Индия, Xcho, MOT", trend: "down" },
-  { pos: 6, title: "8901", artist: "SERYABKINA, Dimma Urih", trend: "up", isNew: true },
-  { pos: 7, title: "Ртуть", artist: "Ваня Дмитриенко", trend: "same" },
-  { pos: 8, title: "Leto", artist: "Jony, Feduk", trend: "up" },
-  { pos: 9, title: "Малахит", artist: "Винтаж", trend: "up" },
-  { pos: 10, title: "KARMA", artist: "Егор Крид, Artik & Asti", trend: "down" },
-  { pos: 11, title: "Заново", artist: "MARY GU", trend: "up" },
-  { pos: 12, title: "Тону", artist: "HOLLYFLAME", trend: "up" },
-  { pos: 13, title: "Намёк на нас", artist: "MOT", trend: "down" },
-  { pos: 14, title: "Кассеты", artist: "LYRIQ", trend: "down" },
-  { pos: 15, title: "Эпилог", artist: "ANNA ASTI, Дима Билан", trend: "down" },
+  { pos: 1, title: "На малиновой луне", artist: "Моя Мишель", trend: "same" },
+  { pos: 2, title: "8901", artist: "SERYABKINA, Dimma Urih", trend: "same" },
+  { pos: 3, title: "Невероятно", artist: "Zvonkiy", trend: "same" },
+  { pos: 4, title: "Хэппи Энд", artist: "Сергей Лазарев, Полина Гагарина", trend: "same" },
+  { pos: 5, title: "Среди Счастливых людей", artist: "Filatov & Karas", trend: "same" },
+  { pos: 6, title: "Зелёные глаза", artist: "Люся Чеботина", trend: "same" },
+  { pos: 7, title: "Шадэ", artist: "By Индия, Xcho, MOT", trend: "same" },
+  { pos: 8, title: "Не стой, танцуй", artist: "Uma2rman", trend: "same" },
+  { pos: 9, title: "Феникс", artist: "Bearwolf", trend: "same" },
+  { pos: 10, title: "Заново", artist: "MARY GU", trend: "same" },
+  { pos: 11, title: "KARMA", artist: "Егор Крид, ARTIK & ASTI", trend: "same" },
+  { pos: 12, title: "Мысли", artist: "Тима Белорусских", trend: "same" },
+  { pos: 13, title: "На ресницах", artist: "Градусы", trend: "same" },
+  { pos: 14, title: "Намёк на нас", artist: "MOT", trend: "same" },
+  { pos: 15, title: "Санта Лючия", artist: "GIAZOV$ BROTHER$", trend: "same" },
+  { pos: 16, title: "GAZ", artist: "ZIVERT", trend: "same" },
+  { pos: 17, title: "Кассеты", artist: "LYRIQ", trend: "same" },
+  { pos: 18, title: "Проще", artist: "Ёлка", trend: "same" },
+  { pos: 19, title: "Эпилог", artist: "ANNA ASTI, Дима Билан", trend: "same" },
+  { pos: 20, title: "Тону", artist: "HOLLYFLAME", trend: "same" },
 ]
 
 const trendConfig: Record<string, { icon: string; color: string; className?: string }> = {
@@ -148,7 +153,7 @@ export function ChartSection() {
       <div className="mx-auto max-w-3xl">
         <div className="mb-8 text-center">
           <span className="rounded-full bg-violet-500/20 px-3 py-1 text-xs font-medium text-violet-400">
-            ГОРЯЧАЯ 15
+            ГОРЯЧАЯ ДВАДЦАТКА
           </span>
           <h2 className="mt-4 text-3xl md:text-4xl font-bold text-white">Музыка Wave FM</h2>
           <p className="mt-2 text-gray-400">Чарт недели и треки, звучавшие в нашем эфире</p>
