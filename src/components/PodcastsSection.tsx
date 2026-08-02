@@ -26,7 +26,7 @@ const schedule: DaySchedule[] = [
     day: "Пятница",
     shows: [
       morningAlarm,
-      { title: "Горячая Пятнадцатка", time: "19:00–20:00", cover: COVERS.hot15 },
+      { title: "Горячая Двадцатка", time: "19:00–20:00", cover: COVERS.hot15 },
     ],
   },
   {
@@ -35,7 +35,7 @@ const schedule: DaySchedule[] = [
   },
   {
     day: "Воскресенье",
-    shows: [{ title: "Горячая Пятнадцатка", time: "14:00–15:00", cover: COVERS.hot15 }],
+    shows: [{ title: "Горячая Двадцатка", time: "14:00–15:00", cover: COVERS.hot15 }],
   },
 ]
 
