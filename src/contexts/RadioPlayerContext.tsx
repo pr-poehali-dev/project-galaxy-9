@@ -17,7 +17,34 @@ export interface PlaylistItem {
   cover: string
 }
 
-const FALLBACK_PLAYLIST: PlaylistItem[] = []
+const FALLBACK_PLAYLIST: PlaylistItem[] = [
+  { date: "2026-08-02", time: "15:04:42", artist: "Niletto", title: "Добрая Лунная", cover: "" },
+  { date: "2026-08-02", time: "15:08:51", artist: "Alan Walker, Isabella Melkman, Katherine O'Ryan", title: "Broken Strings", cover: "" },
+  { date: "2026-08-02", time: "15:11:33", artist: "Dj Piligrim", title: "Ты Меня Забудь", cover: "https://myradio24.org/covers/e1d483e8da248768.jpg" },
+  { date: "2026-08-02", time: "15:16:16", artist: "Татьяна Куртукова", title: "Алёшенька", cover: "" },
+  { date: "2026-08-02", time: "15:19:42", artist: "Filatov & Karas, Мумий Тролль", title: "Amore More, Goodbye", cover: "" },
+  { date: "2026-08-02", time: "15:22:06", artist: "Pizza", title: "Пятница", cover: "" },
+  { date: "2026-08-02", time: "15:25:33", artist: "Ёлка", title: "Выдохни", cover: "https://myradio24.org/covers/52ce69b490be833f.jpg" },
+  { date: "2026-08-02", time: "15:28:06", artist: "Far East Movement, Justin Bieber", title: "Live My Life", cover: "" },
+  { date: "2026-08-02", time: "15:32:06", artist: "Коста Лакоста", title: "А Ты Говоришь", cover: "https://myradio24.org/covers/4ab51dbba4679f3d.jpg" },
+  { date: "2026-08-02", time: "15:35:24", artist: "5sta Family", title: "На костре", cover: "https://myradio24.org/covers/675789f70923dec9.jpg" },
+  { date: "2026-08-02", time: "15:38:42", artist: "Mary Gu", title: "Косички", cover: "" },
+  { date: "2026-08-02", time: "15:41:25", artist: "Jony", title: "Давай На Ты", cover: "https://myradio24.org/covers/0a5f943c7904f0a1.jpg" },
+  { date: "2026-08-02", time: "15:43:51", artist: "ATB", title: "You're Not Alone", cover: "" },
+  { date: "2026-08-02", time: "15:47:42", artist: "Elvira T", title: "Всё Решено", cover: "https://myradio24.org/covers/c4aca6bf6081bc68.jpg" },
+  { date: "2026-08-02", time: "15:51:33", artist: "Дима Билан", title: "Так Устроен Этот Мир", cover: "https://myradio24.org/covers/247e0d9cd3472bc6.jpg" },
+  { date: "2026-08-02", time: "15:54:51", artist: "Filatov & Karas", title: "Мимо Меня", cover: "" },
+  { date: "2026-08-02", time: "15:58:06", artist: "Макsим", title: "Лучшая Ночь", cover: "https://myradio24.org/covers/59f6481fa13de366.jpg" },
+  { date: "2026-08-02", time: "16:02:16", artist: "Kygo, Sandro Cavazza", title: "Hold On Me", cover: "" },
+  { date: "2026-08-02", time: "16:05:15", artist: "Lyriq", title: "Обними", cover: "https://myradio24.org/covers/ed0029a5090cc70d.jpg" },
+  { date: "2026-08-02", time: "16:09:06", artist: "Сергей Лазарев, Полина Гагарина", title: "Хэппи Энд", cover: "https://myradio24.org/covers/059ed376335b60f2.jpg" },
+  { date: "2026-08-02", time: "16:13:07", artist: "By Индия, Xcho, Мот", title: "Шадэ", cover: "https://myradio24.org/covers/d499bf0873868564.jpg" },
+  { date: "2026-08-02", time: "16:16:06", artist: "Женя Трофимов, Комната культур", title: "Осень (OST «Ландыши. Вторая весна»)", cover: "" },
+  { date: "2026-08-02", time: "16:20:16", artist: "Лолита, Коста Лакоста", title: "По", cover: "" },
+  { date: "2026-08-02", time: "16:23:51", artist: "Kungs, Theophilus London", title: "Galaxy", cover: "" },
+  { date: "2026-08-02", time: "16:27:06", artist: "2Маши", title: "Мама, я танцую", cover: "" },
+  { date: "2026-08-02", time: "16:31:25", artist: "Клава Кока", title: "Катастрофа", cover: "https://myradio24.org/covers/c6f27c71e3182961.jpg" },
+]
 
 interface RadioPlayerState {
   isPlaying: boolean
