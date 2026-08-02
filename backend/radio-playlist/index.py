@@ -71,7 +71,11 @@ def handler(event: dict, context) -> dict:
         })
 
     schema = os.environ.get('MAIN_DB_SCHEMA', 'public')
-    today = datetime.now(MSK).date()
+    now_msk = datetime.now(MSK)
+    today = now_msk.date()
+    cutoff = now_msk - timedelta(hours=12)
+    cutoff_date = cutoff.date()
+    cutoff_time = cutoff.strftime('%H:%M:%S')
     playlist = []
 
     try:
@@ -99,13 +103,14 @@ def handler(event: dict, context) -> dict:
                 FROM "{schema}".radio_play_history
                 WHERE stream_id = %s
                   AND hidden = FALSE
+                  AND (play_date > %s OR (play_date = %s AND play_time >= %s))
                 ORDER BY play_date, play_time, lower(artist), lower(title),
                          (cover <> '') DESC
             ) dedup
             ORDER BY play_date DESC, play_time DESC
             LIMIT 50
             """,
-            (STREAM_ID,)
+            (STREAM_ID, cutoff_date, cutoff_date, cutoff_time)
         )
         rows = cur.fetchall()
         playlist = [
